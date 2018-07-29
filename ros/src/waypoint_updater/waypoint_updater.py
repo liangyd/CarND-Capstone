@@ -25,7 +25,7 @@ as well as to verify your TL classifier.
 '''
 
 LOOKAHEAD_WPS = 200 # Number of waypoints we will publish. You can change this number
-
+MAX_DECEL =2 # max decel
 
 class WaypointUpdater(object):
     def __init__(self):
@@ -121,6 +121,7 @@ class WaypointUpdater(object):
     def traffic_cb(self, msg):
         # Callback for /traffic_waypoint message. Implement
         self.stopline_waypoint_idx=msg.data
+        print('tfcb: ', self.stopline_waypoint_idx)
         
 
     def obstacle_cb(self, msg):
