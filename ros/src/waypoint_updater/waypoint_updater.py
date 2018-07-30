@@ -24,8 +24,8 @@ as well as to verify your TL classifier.
 
 '''
 
-LOOKAHEAD_WPS = 200 # Number of waypoints we will publish. You can change this number
-MAX_DECEL =2 # max decel
+LOOKAHEAD_WPS = 100 # Number of waypoints we will publish. You can change this number
+MAX_DECEL =5 # max decel
 
 class WaypointUpdater(object):
     def __init__(self):
@@ -85,7 +85,9 @@ class WaypointUpdater(object):
         lane=Lane()
         closest_idx=self.get_closest_waypoint_idx()
         farthest_idx=closest_idx+LOOKAHEAD_WPS
-        base_waypoints=self.base_waypoints.waypoints[closest_idx:closest_idx+LOOKAHEAD_WPS]
+        base_waypoints=self.base_waypoints.waypoints[closest_idx:farthest_idx]
+        
+        
         if self.stopline_waypoint_idx==-1 or self.stopline_waypoint_idx>=farthest_idx:
             lane.waypoints=base_waypoints
         else:
@@ -97,11 +99,12 @@ class WaypointUpdater(object):
         for i, wp in enumerate(base_waypoints):
             p=Waypoint()
             p.pose=wp.pose
-            stop_idx=max(self.stopline_waypoint_idx-closest_idx-2, 0)
+            stop_idx=max(self.stopline_waypoint_idx-closest_idx-6, 0)
+            
             dist=self.distance(base_waypoints, i, stop_idx)
             vel=math.sqrt(2*MAX_DECEL*dist)
-            if vel<1:
-                vel=0
+            if vel<1.0:
+                vel=0.0
             p.twist.twist.linear.x=min(vel,wp.twist.twist.linear.x)
             temp.append(p)
             
@@ -121,7 +124,6 @@ class WaypointUpdater(object):
     def traffic_cb(self, msg):
         # Callback for /traffic_waypoint message. Implement
         self.stopline_waypoint_idx=msg.data
-        print('tfcb: ', self.stopline_waypoint_idx)
         
 
     def obstacle_cb(self, msg):
