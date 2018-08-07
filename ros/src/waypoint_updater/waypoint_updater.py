@@ -24,8 +24,8 @@ as well as to verify your TL classifier.
 
 '''
 
-LOOKAHEAD_WPS = 100 # Number of waypoints we will publish. You can change this number
-MAX_DECEL =5 # max decel
+LOOKAHEAD_WPS = 55 # Number of waypoints we will publish. You can change this number
+MAX_DECEL =4 # max decel
 
 class WaypointUpdater(object):
     def __init__(self):
@@ -51,6 +51,7 @@ class WaypointUpdater(object):
     def loop(self):
         rate=rospy.Rate(50)
         while not rospy.is_shutdown():
+            
             if self.pose and self.base_waypoints:
                 #Get closest waypoint
                 closest_waypoint_idx=self.get_closest_waypoint_idx()
@@ -124,6 +125,7 @@ class WaypointUpdater(object):
     def traffic_cb(self, msg):
         # Callback for /traffic_waypoint message. Implement
         self.stopline_waypoint_idx=msg.data
+        
         
 
     def obstacle_cb(self, msg):

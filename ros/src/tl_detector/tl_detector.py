@@ -71,7 +71,7 @@ class TLDetector(object):
         #light_wp, state = self.process_traffic_lights()
         #light_wp = light_wp if state == TrafficLight.RED else -1
         #self.upcoming_red_light_pub.publish(Int32(light_wp))
-        
+       
         
     def image_cb(self, msg):
         """Identifies red lights in the incoming camera image and publishes the index
@@ -81,7 +81,6 @@ class TLDetector(object):
             msg (Image): image from car-mounted camera
 
         """
-
         self.has_image = True
         self.camera_image = msg
         light_wp, state = self.process_traffic_lights()
