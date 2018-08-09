@@ -6,7 +6,7 @@ class TLClassifier(object):
     def __init__(self, is_site):
         # load classifier
         if (is_site):
-            self.model=SiteModel()
+            self.model=SiteModel("light_classification/models/ssd_mobilenet_v1_coco_2018_01_28/frozen_inference_graph.pb")
         else:
             self.model=SimModel()
         
